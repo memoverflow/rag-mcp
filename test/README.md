@@ -8,9 +8,13 @@ This test suite provides comprehensive tools to compare the performance of RAG-M
 test/
 ├── README.md                           # This file
 ├── comprehensive_mcp_comparison_test.py # Main comparison test file
+├── run_complete_test.py                # Complete test runner with HTML reports
 ├── run_mcp_comparison.py               # Simplified test runner
+├── html_report_generator.py            # HTML report generation
 ├── token_analysis.py                   # Dedicated token usage analysis
-└── results/                            # Test results output directory (auto-created)
+├── evaluator.py                        # Evaluation metrics implementation
+├── cleanup_test_files.py               # Utility for cleaning test artifacts
+└── [Generated files]                   # Test results (JSON, HTML, logs)
 ```
 
 ## Core Concepts
@@ -107,8 +111,9 @@ pip install matplotlib seaborn pandas numpy
 ## Test Results Interpretation
 
 ### Token Reduction Percentage
-- **>30%**: Excellent token efficiency
-- **15-30%**: Good token efficiency  
+- **>50%**: Excellent token efficiency
+- **30-50%**: Very good token efficiency
+- **15-30%**: Good token efficiency
 - **5-15%**: Moderate token efficiency
 - **±5%**: Minimal difference
 - **<-5%**: RAG-MCP uses more tokens (needs optimization)
@@ -158,8 +163,7 @@ def _get_default_test_queries(self) -> List[Dict[str, Any]]:
     return [
         {
             'query': 'Your custom query',
-            'expected_tools': ['expected_tool_name'],
-            'category': 'query_category'
+            'expected_tools': ['expected_tool_name']
         },
         # Add more queries...
     ]
@@ -177,14 +181,37 @@ def _calculate_efficiency_score(self, rag_data: Dict, full_data: Dict) -> float:
 
 ## Performance Benchmarks
 
-Typical results based on filesystem operations:
+Latest results based on the most recent test report (2025-05-27):
 
 | Metric | RAG-MCP | Full MCP | Improvement |
 |--------|---------|----------|-------------|
-| Average Token Usage | ~800 | ~1200 | 33% reduction |
-| Average Response Time | ~2.5s | ~3.0s | 17% faster |
-| Success Rate | 95% | 98% | -3% |
-| Tool Selection Accuracy | 92% | 89% | +3% |
+| Average Token Usage | 1,670 | 6,630 | 74.8% reduction |
+| Average Response Time | 6.71s | 17.69s | 62.1% faster |
+| Success Rate | 100% | 88.9% | +11.1% |
+| Tool Selection Accuracy | 61.1% | 66.7% | -5.6% |
+
+### Key Findings from Testing
+
+1. **Dramatic Token Efficiency**: RAG-MCP reduces token usage by nearly 75%, significantly exceeding initial expectations
+2. **Substantial Speed Improvement**: Response times with RAG-MCP are approximately 62% faster than Full MCP
+3. **Higher Success Rate**: RAG-MCP demonstrated 100% success rate compared to 88.9% for Full MCP
+4. **Tool Accuracy Trade-off**: While Full MCP shows slightly better tool selection accuracy (+5.6%), this advantage is offset by slower response times and significantly higher token consumption
+5. **Query-Specific Performance**: 
+   - For simple queries: RAG-MCP achieves comparable accuracy with 45-57% token reduction
+   - For complex queries: RAG-MCP achieves 70-84% token reduction with moderate accuracy trade-offs
+
+## LLM Integration
+
+The test suite uses AWS Bedrock's Claude 3 Sonnet (anthropic.claude-3-sonnet-20240229-v1:0) as the default LLM for both RAG-MCP and Full MCP evaluation. The configuration can be adjusted in the environment settings:
+
+```bash
+# LLM Configuration
+BEDROCK_MODEL_ID=anthropic.claude-3-sonnet-20240229-v1:0
+BEDROCK_MAX_TOKENS=4096
+BEDROCK_TEMPERATURE=0.7
+```
+
+Other compatible LLMs can be configured through the environment settings or command-line parameters.
 
 ## Rate Limiting ⏱️
 

@@ -49,6 +49,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+cover/
 
 # Translations
 *.mo
@@ -166,3 +167,57 @@ credentials
 # Tmp files
 *.html
 *.json
+
+# ===== MCP Test Generated Files =====
+
+# Test result files (JSON)
+test/mcp_comparison_results_*.json
+test/token_analysis_*.json
+
+# Test report files (HTML)
+test/mcp_comparison_report_*.html
+
+# Test log files
+test/mcp_comparison_test.log
+test/*.log
+
+# Test visualization files
+test/token_analysis_plot_*.png
+test/*.png
+test/*.jpg
+test/*.jpeg
+test/*.gif
+
+# Test temporary files and directories
+test_file_*.txt
+sample_*.txt
+backup_*.txt
+temp_*.txt
+mcp_test_*.txt
+test_dir_*/
+temp_dir_*/
+mcp_test_dir_*/
+
+# Test permissions and temporary files
+test/permissions.txt
+
+# Any test-generated files with timestamps
+*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9][0-9][0-9][0-9][0-9][0-9].*
+
+# Test cache and temporary directories
+test/results/
+test/output/
+test/temp/
+
+# Data analysis temporary files
+*.pkl
+*.pickle
+*.csv.bak
+*.json.bak
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
